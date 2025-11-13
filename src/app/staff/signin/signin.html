@@ -1,0 +1,22 @@
+<div>
+    <header *ngIf="showName">{{ companyName }}</header>
+    <div ngSwitch= "userCase">
+        <p *ngSwitchCase="'staff'">Staff Case</p>
+        <p *ngSwitchCase="'admin'">Admin Case</p>
+        <p *ngSwitchDefault>Default Case</p>
+</div>
+
+     <div class="sign-in"> 
+        <h1>Sign In</h1> 
+        <form [formGroup]="signinForm"> 
+            <mat-form-field class="input-field"> 
+                <mat-label>Staff ID</mat-label>
+                <input matInput type="text" formControlName="staffId" /> 
+            </mat-form-field>
+            <mat-form-field class="input-field"> 
+                <mat-label>Password</mat-label>
+                <input matInput type="password" formControlName="password" /> 
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit" (click)="submitForm()">Sign In</button> 
+        </form> 
+    </div>

@@ -1,0 +1,107 @@
+<div class="staff-view-container">
+  <!-- Header -->
+  <div class="staff-header">
+    <h2>Staff Management</h2>
+    <p class="subtitle">Click on any staff member to view their attendance details</p>
+  </div>
+
+  <!-- Staff List Table -->
+  <div class="table-section">
+    <div class="table-wrapper">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Staff ID</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Last Sign-in</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let staff of staffList" (click)="openModal(staff)" class="clickable-row">
+            <td>
+              <div class="staff-name">
+                <div class="avatar">{{ staff.name.charAt(0) }}</div>
+                <span>{{ staff.name }}</span>
+              </div>
+            </td>
+            <td>{{ staff.id }}</td>
+            <td>
+              <span class="department-badge">{{ staff.department }}</span>
+            </td>
+            <td>{{ staff.email }}</td>
+            <td>{{ staff.lastSignIn }}</td>
+            <td>
+              <button class="view-btn" (click)="openModal(staff); $event.stopPropagation()">
+                View Details
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" *ngIf="showModal" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <div class="modal-header">
+        <div class="staff-info">
+          <div class="avatar-large">{{ selectedStaff?.name?.charAt(0) }}</div>
+          <div>
+            <h3>{{ selectedStaff?.name }}</h3>
+            <p class="staff-id">{{ selectedStaff?.id }} • {{ selectedStaff?.department }}</p>
+          </div>
+        </div>
+        <button class="close-btn" (click)="closeModal()">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <h4>Attendance Summary</h4>
+        <div class="metrics-grid">
+          <div class="metric-card signins">
+            <div class="metric-icon">📅</div>
+            <div class="metric-details">
+              <p class="metric-value">{{ selectedStaff?.signIns }}</p>
+              <p class="metric-label">Times Signed In</p>
+            </div>
+          </div>
+
+          <div class="metric-card lateness">
+            <div class="metric-icon">⏰</div>
+            <div class="metric-details">
+              <p class="metric-value">{{ selectedStaff?.latenessCount }}</p>
+              <p class="metric-label">Lateness Count</p>
+            </div>
+          </div>
+
+          <div class="metric-card deductions">
+            <div class="metric-icon">💰</div>
+            <div class="metric-details">
+              <p class="metric-value">{{ selectedStaff?.deductions | currency: '₦' }}</p>
+              <p class="metric-label">Total Deductions</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="additional-info">
+          <div class="info-row">
+            <span class="info-label">Email:</span>
+            <span class="info-value">{{ selectedStaff?.email }}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Last Sign-in:</span>
+            <span class="info-value">{{ selectedStaff?.lastSignIn }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

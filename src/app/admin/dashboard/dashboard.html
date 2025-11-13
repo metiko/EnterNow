@@ -1,0 +1,187 @@
+<div class="dashboard-container">
+  <div class="dashboard-header">
+    <div class="welcome-filter">
+      <label for="staffFilter">Welcome,</label>
+      <select id="staffFilter" [(ngModel)]="selectedStaff">
+        <option *ngFor="let staff of staffList" [value]="staff">{{ staff }}</option>
+      </select>
+    </div>
+    <button class="create-signin-btn" (click)="openSignInModal()">
+      <span class="btn-icon">+</span> Create Sign-In
+    </button>
+  </div>
+
+  <!-- Metric Boxes -->
+  <div class="metrics-summary">
+    <div class="metric-box signins">
+      <h3>Sign-ins</h3>
+      <p>{{ signIns }}</p>
+    </div>
+    <div class="metric-box lateness">
+      <h3>% Lateness</h3>
+      <p>{{ lateness }}%</p>
+    </div>
+    <div class="metric-box early">
+      <h3>Early Birds</h3>
+      <p>{{ earlyBirds }}</p>
+    </div>
+    <div class="metric-box suspension">
+      <h3>Suspensions</h3>
+      <p>{{ suspensions }}</p>
+    </div>
+  </div>
+
+  <!-- Metrics Details -->
+  <div class="metrics-details">
+    <div class="metric-card">
+      <h3>Top Earliest Staff</h3>
+      <ul>
+        <li *ngFor="let staff of topEarlyStaff">{{ staff.name }} - {{ staff.time }}</li>
+      </ul>
+    </div>
+
+    <div class="metric-card">
+      <h3>Lateness Count</h3>
+      <ul>
+        <li *ngFor="let staff of latenessCount">{{ staff.name }} - {{ staff.days }} days late</li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div class="signin-records-section" *ngIf="signInRecords.length > 0">
+    <div class="section-header">
+      <h3>Recent Sign-In Records</h3>
+      <span class="record-count">{{ signInRecords.length }} record(s)</span>
+    </div>
+    
+    <div class="table-container">
+      <table class="signin-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Employee ID</th>
+            <th>Department</th>
+            <th>Email</th>
+            <th>Sign-In Time</th>
+            <th>Notes</th>
+            <th>Created By</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of signInRecords; let i = index" class="table-row">
+            <td>{{ i + 1 }}</td>
+            <td class="employee-id">{{ record.employeeId }}</td>
+            <td>
+              <span class="department-badge">{{ record.department }}</span>
+            </td>
+            <td class="email">{{ record.email }}</td>
+            <td class="time">{{ record.signInTime }}</td>
+            <td class="notes">{{ record.notes || 'N/A' }}</td>
+            <td class="created-by">Security</td>
+            <td>
+              <button class="btn-delete" (click)="deleteRecord(i)" title="Delete record">
+                🗑️
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Empty State -->
+  <div class="empty-state" *ngIf="signInRecords.length === 0">
+    <div class="empty-icon">📋</div>
+    <h3>No Sign-In Records Yet</h3>
+    <p>Click "Create Sign-In" to add a new record</p>
+  </div>
+</div>
+
+<!-- Sign-In Modal -->
+<div class="modal-overlay" *ngIf="showSignInModal" (click)="closeSignInModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Create Sign-In for Staff</h2>
+      <button class="close-btn" (click)="closeSignInModal()">&times;</button>
+    </div>
+    
+    <form class="signin-form" (ngSubmit)="submitSignIn()">
+      <div class="form-group">
+        <label for="employeeId">Employee ID <span class="required">*</span></label>
+        <input 
+          type="text" 
+          id="employeeId" 
+          [(ngModel)]="signInForm.employeeId" 
+          name="employeeId"
+          placeholder="Enter employee ID"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="department">Department <span class="required">*</span></label>
+        <select 
+          id="department" 
+          [(ngModel)]="signInForm.department" 
+          name="department"
+          required
+        >
+          <option value="" disabled selected>Select department</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Human Resources">Human Resources</option>
+          <option value="Finance">Finance</option>
+          <option value="Marketing">Marketing</option>
+          <option value="Operations">Operations</option>
+          <option value="Sales">Sales</option>
+          <option value="IT">IT</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="email">Email <span class="required">*</span></label>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="signInForm.email" 
+          name="email"
+          placeholder="employee@company.com"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="signInTime">Sign-In Time</label>
+        <input 
+          type="time" 
+          id="signInTime" 
+          [(ngModel)]="signInForm.signInTime" 
+          name="signInTime"
+        />
+        <small class="helper-text">Leave blank to use current time</small>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">Notes (Optional)</label>
+        <textarea 
+          id="notes" 
+          [(ngModel)]="signInForm.notes" 
+          name="notes"
+          placeholder="Add any relevant notes about this sign-in..."
+          rows="3"
+        ></textarea>
+      </div>
+
+      <div class="form-actions">
+        <button type="button" class="btn-cancel" (click)="closeSignInModal()">Cancel</button>
+        <button type="submit" class="btn-submit">Create Sign-In</button>
+      </div>
+    </form>
+
+    <div class="success-message" *ngIf="showSuccessMessage">
+      <span class="success-icon">✓</span>
+      Sign-in created successfully!
+    </div>
+  </div>
+</div>
