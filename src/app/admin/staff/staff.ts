@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-staff',
@@ -6,9 +6,13 @@ import { Component } from '@angular/core';
   templateUrl: './staff.html',
   styleUrl: './staff.css',
 })
-export class Staff {
+export class Staff implements OnInit {
   selectedStaff: any = null;
   showModal = false;
+  
+  totalSignIns: number = 0;
+  totalLateness: number = 0;
+  totalDeductions: number = 0;
 
   staffList = [
     { 
@@ -62,6 +66,16 @@ export class Staff {
       lastSignIn: '2025-10-03 7:40 AM'
     },
   ];
+
+  ngOnInit() {
+    this.calculateTotals();
+  }
+
+  calculateTotals() {
+    this.totalSignIns = this.staffList.reduce((sum, staff) => sum + staff.signIns, 0);
+    this.totalLateness = this.staffList.reduce((sum, staff) => sum + staff.latenessCount, 0);
+    this.totalDeductions = this.staffList.reduce((sum, staff) => sum + staff.deductions, 0);
+  }
 
   openModal(staff: any) {
     this.selectedStaff = staff;

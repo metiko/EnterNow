@@ -5,6 +5,36 @@
     <p class="subtitle">Click on any staff member to view their attendance details</p>
   </div>
 
+  <!-- Summary Cards -->
+  <div class="summary-cards">
+    <div class="summary-card signins-card">
+      <div class="card-icon">📊</div>
+      <div class="card-content">
+        <h3>Total Sign-ins</h3>
+        <p class="card-value">{{ totalSignIns }}</p>
+        <span class="card-label">All staff members</span>
+      </div>
+    </div>
+
+    <div class="summary-card lateness-card">
+      <div class="card-icon">⏱️</div>
+      <div class="card-content">
+        <h3>Total Lateness</h3>
+        <p class="card-value">{{ totalLateness }}</p>
+        <span class="card-label">Across all staff</span>
+      </div>
+    </div>
+
+    <div class="summary-card deductions-card">
+      <div class="card-icon">💸</div>
+      <div class="card-content">
+        <h3>Total Deductions</h3>
+        <p class="card-value">{{ totalDeductions | currency: '₦' }}</p>
+        <span class="card-label">Combined amount</span>
+      </div>
+    </div>
+  </div>
+
   <!-- Staff List Table -->
   <div class="table-section">
     <div class="table-wrapper">
