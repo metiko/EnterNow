@@ -8,7 +8,7 @@
 /* Header stays at top */
 .header {
   flex-shrink: 0;
-  background-color: #859bd7; /* deep blue */
+  background-color: white; /* deep blue */
   color: white;
   padding: 1rem 2rem;
   font-weight: 600;

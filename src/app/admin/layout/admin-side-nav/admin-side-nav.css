@@ -9,7 +9,7 @@
 /* ===== Vertical Sidebar Navigation ===== */
 nav {
   width: 240px;
-  background-color: #859bd7; /* Material Blue */
+  background-color: #2196f3; /* Material Blue */
   color: #ffffff;
   display: flex;
   flex-direction: column;
@@ -52,7 +52,7 @@ nav a:hover {
 }
 
 nav a.active {
-  background-color: #1e3a8a;
+  background-color: #2196f3;
   border-left: 4px solid #ffffff;
   font-weight: 600;
 }
